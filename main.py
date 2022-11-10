@@ -18,6 +18,9 @@ class BankAccount:
 
     def create_account(self):
         all_accounts = os.listdir()
+        if self.user_login == '' or self.user_pass == '':
+            notif.config(fg='red', text='Заполните все поля!')
+            return
         for name in all_accounts:
             if self.user_login == name:
                 notif.config(fg='red', text='Аккаунт уже существует!')
@@ -27,6 +30,7 @@ class BankAccount:
             f.write(f'{self.user_login}\n'
                     f'{self.user_pass}\n'
                     f'{self.balance}')
+        notif.config(fg='green', text='Аккаунт успешно создан!')
 
     def deposit(self, amount):
         self.balance += amount
@@ -49,9 +53,6 @@ main.title('Banking System')  # устанавливаем заголовок о
 def create_user():
     login = user_login.get()
     password = user_pass.get()
-    if login == '' or password == '':
-        notif.config(fg='red', text='Заполните все поля!')
-        return
     BankAccount(login, password)
 
 
