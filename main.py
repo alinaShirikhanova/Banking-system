@@ -7,7 +7,6 @@ from PIL import Image, ImageTk
 class BankAccount:
     id = 1  # Class Attribute
 
-
     def __init__(self, user_login, user_pass, balance=0):
         self.user_login = user_login
         self.user_pass = user_pass
@@ -48,6 +47,7 @@ class BankAccount:
 # Создание окна
 main = Tk()  # создаем корневой объект - окно
 main.title('Banking System')  # устанавливаем заголовок окна
+main.geometry("300x300")  # устанавливаем размеры окна
 
 
 def create_user():
@@ -67,7 +67,7 @@ def register():
     user_pass = StringVar()
 
     register_screen = Toplevel(main)
-    register_screen.geometry('300x300')
+    register_screen.geometry('300x300+500+500')
     register_screen.title('Register')
 
     # Labels
@@ -89,7 +89,19 @@ def register():
                                      pady=20)
 
 
-main.geometry("300x300")  # устанавливаем размеры окна
+def login():
+    # Login Screen
+    login_screen = Toplevel(main)
+    login_screen.title('Login')
+
+    # Labels
+    Label(login_screen, text='Login to your account', font=('Calibri', 12)).grid(row=0, sticky=N, pady=10)
+    Label(login_screen, text='Username', font=('Calibri', 12)).grid(row=1, sticky=W)
+    Label(login_screen, text='Password', font=('Calibri', 12)).grid(row=2, sticky=W)
+    # Entries
+    Entry(login_screen, textvariable=user_login).grid(row=1, column=0)
+    Entry(login_screen, textvariable=user_pass, show='*').grid(row=2, column=0)
+
 
 # Создание картинки
 img = Image.open('data/img/bank.PNG')  # открываем изображение
@@ -102,6 +114,6 @@ Label(main, image=img).pack(side=TOP)
 
 # Buttons
 Button(main, text='Register', font=('Calibri', 12), width=15, command=register).pack(side=TOP, pady=10)
-Button(main, text='Login', font=('Calibri', 12), width=15).pack(side=TOP)
+Button(main, text='Login', font=('Calibri', 12), width=15, command=login).pack(side=TOP)
 
 main.mainloop()  # запускаем цикл обработки событий окна для взаимодействия с пользователем
