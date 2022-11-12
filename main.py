@@ -44,6 +44,7 @@ class BankAccount:
         return self.balance
 
 
+
 # Создание окна
 main = Tk()  # создаем корневой объект - окно
 main.title('Banking System')  # устанавливаем заголовок окна
@@ -54,6 +55,27 @@ def create_user():
     login = user_login.get()
     password = user_pass.get()
     BankAccount(login, password)
+
+
+def login_session():
+    all_accounts = os.listdir()
+    login_name = log_login.get()
+    login_pass = log_pass.get()
+
+    for name in all_accounts:
+        if name == login_name:
+            with open(name, 'r') as f:
+                f = f.read().split('\n')
+                password = f[1]
+            if login_pass == password:
+                login_screen.destroy()
+                account_window = Toplevel(main)
+                account_window.title('DashBoard')
+                return
+            else:
+                login_notif.config(fg='red', text="Password is incorrect")
+                return
+    login_notif.config(fg='red', text="Такого аккаунта не существует")
 
 
 # Register and login
@@ -90,6 +112,14 @@ def register():
 
 
 def login():
+    # Variables
+    global log_login
+    global log_pass
+    global login_screen
+    global login_notif
+    log_login = StringVar()
+    log_pass = StringVar()
+
     # Login Screen
     login_screen = Toplevel(main)
     login_screen.title('Login')
@@ -98,9 +128,15 @@ def login():
     Label(login_screen, text='Login to your account', font=('Calibri', 12)).grid(row=0, sticky=N, pady=10)
     Label(login_screen, text='Username', font=('Calibri', 12)).grid(row=1, sticky=W)
     Label(login_screen, text='Password', font=('Calibri', 12)).grid(row=2, sticky=W)
+    login_notif = Label(login_screen, font=('Calibri', 12))
+    login_notif.grid(row=4, sticky=N)
+
     # Entries
-    Entry(login_screen, textvariable=user_login).grid(row=1, column=0)
-    Entry(login_screen, textvariable=user_pass, show='*').grid(row=2, column=0)
+    Entry(login_screen, textvariable=log_login).grid(row=1, column=1)
+    Entry(login_screen, textvariable=log_pass, show='*').grid(row=2, column=1)
+
+    # Buttons
+    Button(login_screen, text='Log in', font=('Calibri', 12), width=15, command=login_session).grid(row=3, sticky=N)
 
 
 # Создание картинки
